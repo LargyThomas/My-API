@@ -1,22 +1,22 @@
 // Import the required modules
 const fs = require('fs');
-const csv = require('csv-parse');
+const { parse } = require('csv-parse/sync');
 const { Client } = require('pg');
 require('dotenv').config();
 
 // Configurate the PostgreSQL client with environment variables
 const client = new Client ({
-    host : process.env.HOST,
-    port : process.env.PORT,
-    database : process.env.DATABASE,
-    user : process.env.USER,
-    password : process.env.PASSWORD
+    host : process.env.PG_HOST,
+    port : process.env.PG_PORT,
+    database : process.env.PG_DATABASE,
+    user : process.env.PG_USER,
+    password : process.env.PG_PASSWORD
 });
 
 // Function to read CSV file and return its content as an array of objects
 function readCsv(path) {
     const content = fs.readFileSync(path, 'utf-8');
-    return csv.parse(content, {
+    return parse(content, {
         columns: true,
         skip_empty_lines: true
     });
@@ -38,14 +38,46 @@ async function seedReferenceTable(tableName, names) {
     return map;
 }
 
+// Function to insert animals into the database
+async function seedAnimals(animalsData, animalTypeMap, outcomeTypeMap) {
+    // Start a transaction to ensure all inserts are treated as a single unit of work
+    await client.query('BEGIN');
+
+    for (const row of animalsData) {
+        await client.query(
+            `INSERT INTO animals (external_id, name, date_of_birth, outcome_datetime, age_outcome_days, animal_type_id, outcome_type_id, outcome_subtype, sex, is_intact, breed, color)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+             ON CONFLICT (external_id) DO NOTHING`,
+            [
+                row.external_id,
+                row.name || null,
+                row.date_of_birth || null,
+                row.outcome_datetime,
+                row.age_outcome_days ? Math.round(parseFloat(row.age_outcome_days)) : null,
+                animalTypeMap.get(row.animal_type) || null,
+                outcomeTypeMap.get(row.outcome_type) || null,
+                row.outcome_subtype || null,
+                row.sex,
+                row.is_intact === '' ? null : row.is_intact === 'true',
+                row.breed,
+                row.color
+            ]
+        );
+    }
+
+    // Commit the transaction to save all changes to the database
+    await client.query('COMMIT');
+    console.log(`${animalsData.length} animaux insérés`);
+}
+
 async function main() {
     try {
         await client.connect();
-        console.log('Connected to the database');
 
         // Read the CSV files and parse them into arrays of objects
         const animalTypesData = readCsv('data/animal_types.csv');
         const outcomeTypesData = readCsv('data/outcome_types.csv');
+        const animalsData = readCsv('data/animals_clean.csv').slice(0, 5000);
 
         // Extract the 'name' column into arrays of strings
         const namesAnimalTypes = animalTypesData.map(row => row.name);
@@ -55,16 +87,10 @@ async function main() {
         const animalTypeMap = await seedReferenceTable('animal_types', namesAnimalTypes);
         const outcomeTypeMap = await seedReferenceTable('outcome_types', namesOutcomeTypes);
 
-        // Display the results to verify everything worked
-        console.log('\n Animal Types Map (Name -> ID):');
-        console.log(animalTypeMap);
+        // Insert the animals
+        await seedAnimals(animalsData, animalTypeMap, outcomeTypeMap);
 
-        console.log('\n Outcome Types Map (Name -> ID):');
-        console.log(outcomeTypeMap);
-
-        // Disconnect from the database
         await client.end();
-        console.log('\n Disconnected from the database');
 
     } catch (error) {
         console.error(' Error:', error);
