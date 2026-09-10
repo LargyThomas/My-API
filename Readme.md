@@ -12,3 +12,26 @@ C'est une base de données qui suit chaque animal dans un refuge : son identité
 ## Création de la base de données
 
 Nom de la base de données : ASD (Acronyme de : Animal Shelter Data)
+
+## Architecture
+
+```
+src/
+  features/
+    animals/
+      animals.routes.js
+      animals.controller.js
+      animals.service.js
+    auth/
+      auth.routes.js
+      auth.controller.js
+      auth.service.js
+  middlewares/
+    auth.middleware.js
+  db/
+    pool.js
+  cache/
+    redis.js
+```
+
+feature-based avec une petite séparation controller/service/repository à l'intérieur de chaque feature
