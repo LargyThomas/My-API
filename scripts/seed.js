@@ -99,4 +99,8 @@ async function main() {
     }
 }
 
-main();
+// Run only when this file is executed directly (node seed.js), not when imported as a module
+if (require.main === module) {
+    main();
+}   
+module.exports = { client };
