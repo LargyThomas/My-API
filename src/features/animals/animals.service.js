@@ -17,8 +17,6 @@ const findAllAnimals = async ({ page, limit, offset }) => {
     const countQuery = `
         SELECT COUNT(*) AS total
         FROM animals a
-        LEFT JOIN animal_types at ON a.animal_type_id = at.id
-        LEFT JOIN outcome_types ot ON a.outcome_type_id = ot.id
     `;
     const resultCountQuery = await pool.query(countQuery);
     const countRows = resultCountQuery.rows;
@@ -29,4 +27,16 @@ const findAllAnimals = async ({ page, limit, offset }) => {
     return { data, pagination: { page, limit, offset, totalRows, totalPages, hasPrevious: page > 1, hasNext: page < totalPages } };
 };
 
-module.exports = { findAllAnimals };
+const findAnimalById = async (id) => {
+    const dataQuery = await pool.query(`
+        SELECT a.external_id, a.name, a.date_of_birth, a.outcome_datetime, a.age_outcome_days, at.name AS animal_type, ot.name AS outcome_type, a.outcome_subtype, a.sex, a.is_intact, a.breed, a.color
+        FROM animals a
+        LEFT JOIN animal_types at ON a.animal_type_id = at.id
+        LEFT JOIN outcome_types ot ON a.outcome_type_id = ot.id
+        WHERE a.id = $1
+    `, [id]);
+
+    return dataQuery.rows[0] || null;
+};
+
+module.exports = { findAllAnimals, findAnimalById };
