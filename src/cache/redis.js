@@ -12,7 +12,7 @@ redisClient.on('error', (err) => {
 (async () => {
     try {
         await redisClient.connect();
-        console.log('Connected to Valkey');
+        console.log('Connected to Redis successfully.');
     } catch (error) {
         console.error('Valkey connection failed:', error.message);
     }
