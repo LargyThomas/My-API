@@ -27,16 +27,52 @@ const findAllAnimals = async ({ page, limit, offset }) => {
     return { data, pagination: { page, limit, offset, totalRows, totalPages, hasPrevious: page > 1, hasNext: page < totalPages } };
 };
 
+// Function to retrieve a specific animal by its ID from the database
 const findAnimalById = async (id) => {
-    const dataQuery = await pool.query(`
+    const query = `
         SELECT a.external_id, a.name, a.date_of_birth, a.outcome_datetime, a.age_outcome_days, at.name AS animal_type, ot.name AS outcome_type, a.outcome_subtype, a.sex, a.is_intact, a.breed, a.color
         FROM animals a
         LEFT JOIN animal_types at ON a.animal_type_id = at.id
         LEFT JOIN outcome_types ot ON a.outcome_type_id = ot.id
         WHERE a.id = $1
-    `, [id]);
-
-    return dataQuery.rows[0] || null;
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows[0] || null;
 };
 
-module.exports = { findAllAnimals, findAnimalById };
+const createAnimalService = async (animalData) => {
+    const { external_id, name, date_of_birth, outcome_datetime, age_outcome_days, animal_type_id, outcome_type_id, outcome_subtype, sex, is_intact, breed, color } = animalData;
+
+    const query = `
+        INSERT INTO animals (external_id, name, date_of_birth, outcome_datetime, age_outcome_days, animal_type_id, outcome_type_id, outcome_subtype, sex, is_intact, breed, color)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        RETURNING *
+    `;
+    const result = await pool.query(query, [external_id, name, date_of_birth, outcome_datetime, age_outcome_days, animal_type_id, outcome_type_id, outcome_subtype, sex, is_intact, breed, color]);
+    return result.rows[0];
+};
+
+const updateAnimalService = async (id, animalData) => {
+    const { name, date_of_birth, outcome_datetime, age_outcome_days } = animalData;
+
+    const query = `
+        UPDATE animals
+        SET name = $1, date_of_birth = $2, outcome_datetime = $3, age_outcome_days = $4
+        WHERE id = $5
+        RETURNING *
+    `;
+    const result = await pool.query(query, [name, date_of_birth, outcome_datetime, age_outcome_days, id]);
+    return result.rows[0];
+};
+
+const deleteAnimalService = async (id) => {
+    const query = `
+        DELETE FROM animals
+        WHERE id = $1
+        RETURNING *
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+};
+
+module.exports = { findAllAnimals, findAnimalById, createAnimalService, updateAnimalService, deleteAnimalService };
