@@ -1,19 +1,67 @@
-# My API 
+# My-API
 
-## Choix de la stack : 
+Une API REST pour gérer les données d'animaux en refuge (Animal Shelter Data).
 
-Framework : Express JS
-Base : Postgre SQL
+## Table des matières
 
-## Création d'un schéma de données
+- **Description**
+- **Tech & architecture**
+- **Prérequis**
+- **Installation**
+- **Base de données & seed**
+- **Lancer le serveur**
+- **Structure du projet**
+- **Contribuer**
 
-C'est une base de données qui suit chaque animal dans un refuge : son identité, son type, son sexe, sa race, et son sort final (adopté, transféré, euthanasié…), avec des tables de référence pour éviter les doublons et des index pour que les recherches restent rapides.
+## Description
 
-## Création de la base de données
+API légère construite avec Express.js et PostgreSQL pour stocker et interroger les informations des animaux (type, sexe, race, issue/outcome, etc.). Cache Redis utilisé pour améliorer les performances des requêtes fréquentes.
 
-Nom de la base de données : ASD (Acronyme de : Animal Shelter Data)
+## Tech & architecture
 
-## Architecture
+- Backend: Node.js, Express
+- Base de données: PostgreSQL
+- Cache: Redis
+- Tests: (à ajouter si nécessaire)
+
+## Prérequis
+
+- Node.js 18+ et npm
+- PostgreSQL
+- Redis (optionnel mais recommandé)
+
+## Installation
+
+Clonez le dépôt et installez les dépendances:
+
+```bash
+git clone <repo-url>
+cd My-API
+npm install
+```
+
+## Base de données & seed
+
+Le schéma SQL est disponible dans `schema.sql`.
+
+Pour créer la base et les tables (exemple psql):
+
+```bash
+psql -f schema.sql -d asd
+node scripts/seed.js
+```
+
+`scripts/seed.js` importe les CSV présents dans `data/` et peuple les tables de référence et les données initiales.
+
+## Lancer le serveur
+
+```bash
+npm run start
+# ou en dev
+npm run dev
+```
+
+## Structure du projet
 
 ```
 src/
@@ -26,12 +74,25 @@ src/
       auth.routes.js
       auth.controller.js
       auth.service.js
+      auth.validation.js
   middlewares/
     auth.middleware.js
   db/
     pool.js
   cache/
     redis.js
+scripts/
+  seed.js
+data/
+  *.csv
+schema.sql
+server.js
 ```
 
-feature-based avec une petite séparation controller/service/repository à l'intérieur de chaque feature
+## Endpoints principaux (exemples)
+
+- `GET /api/animals` : liste des animaux
+- `GET /api/animals/:id` : détail d'un animal
+- `POST /api/auth/login` : authentification
+
+(Voir les routes dans `src/features/*` pour la liste complète.)
