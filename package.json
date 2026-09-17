@@ -29,6 +29,7 @@
     "mysql2": "^3.24.4",
     "pg": "^8.23.0",
     "redis": "^6.2.1",
+    "cors": "^2.8.5",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1"
   },
