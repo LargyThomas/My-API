@@ -22,42 +22,16 @@ API légère construite avec Express.js et PostgreSQL pour stocker et interroger
 - Backend: Node.js, Express
 - Base de données: PostgreSQL
 - Cache: Redis
-- Tests: (à ajouter si nécessaire)
-
-## Prérequis
-
-- Node.js 18+ et npm
-- PostgreSQL
-- Redis (optionnel mais recommandé)
-
-## Installation
-
-Clonez le dépôt et installez les dépendances:
-
-```bash
-git clone <repo-url>
-cd My-API
-npm install
-```
 
 ## Base de données & seed
 
 Le schéma SQL est disponible dans `schema.sql`.
-
-Pour créer la base et les tables (exemple psql):
-
-```bash
-psql -f schema.sql -d asd
-node scripts/seed.js
-```
 
 `scripts/seed.js` importe les CSV présents dans `data/` et peuple les tables de référence et les données initiales.
 
 ## Lancer le serveur
 
 ```bash
-npm run start
-# ou en dev
 npm run dev
 ```
 
@@ -94,5 +68,3 @@ server.js
 - `GET /api/animals` : liste des animaux
 - `GET /api/animals/:id` : détail d'un animal
 - `POST /api/auth/login` : authentification
-
-(Voir les routes dans `src/features/*` pour la liste complète.)
