@@ -1,10 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const authMiddleware = require('./middlewares/auth.middleware');
 const app = express();
 
 // Encode the request body as JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Enable CORS for requests from the frontend (Vite dev server)
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.options('{*split}', cors());
 
 app.use((req, res, next) => {
     const mutatingMethods = ['POST', 'PUT', 'DELETE'];

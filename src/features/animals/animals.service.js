@@ -29,12 +29,15 @@ const findAllAnimals = async ({ page, limit, offset }) => {
 
 // Function to retrieve a specific animal by its ID from the database
 const findAnimalById = async (id) => {
+    // Accept either numeric primary `id` or string `external_id` (e.g., A134067)
+    const isNumeric = /^\d+$/.test(String(id));
+
     const query = `
         SELECT a.external_id, a.name, a.date_of_birth, a.outcome_datetime, a.age_outcome_days, at.name AS animal_type, ot.name AS outcome_type, a.outcome_subtype, a.sex, a.is_intact, a.breed, a.color
         FROM animals a
         LEFT JOIN animal_types at ON a.animal_type_id = at.id
         LEFT JOIN outcome_types ot ON a.outcome_type_id = ot.id
-        WHERE a.id = $1
+        WHERE ${isNumeric ? 'a.id = $1' : 'a.external_id = $1'}
     `;
     const result = await pool.query(query, [id]);
     return result.rows[0] || null;
