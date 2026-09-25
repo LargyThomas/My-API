@@ -1,17 +1,3 @@
-const validateRegister = (req, res, next) => {
-    const { email, password } = req.body || {};
-
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required.' });
-    }
-
-    if (typeof email !== 'string' || typeof password !== 'string') {
-        return res.status(400).json({ error: 'Email and password must be strings.' });
-    }
-
-    next();
-};
-
 const validateLogin = (req, res, next) => {
     const { email, password } = req.body || {};
 
@@ -26,4 +12,4 @@ const validateLogin = (req, res, next) => {
     next();
 };
 
-module.exports = { validateRegister, validateLogin };
+module.exports = { validateLogin };

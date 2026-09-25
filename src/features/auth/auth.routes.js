@@ -64,14 +64,13 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../../config/passport');
-const { register, login } = require('./auth.controller');
-const { validateRegister, validateLogin } = require('./auth.validation');
+const { login } = require('./auth.controller');
+const { validateLogin } = require('./auth.validation');
 const { generateToken } = require('./auth.service');
 const authMiddleware = require('../../middlewares/auth.middleware');
 const { pool } = require('../../db/pool');
 
 // Local auth endpoints (email + password)
-router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
 
 /**

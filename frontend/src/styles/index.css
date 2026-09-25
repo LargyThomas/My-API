@@ -65,19 +65,6 @@ input {
   border-radius: 8px;
 }
 
-button {
-  padding: 0.7rem 1rem;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #1d4ed8;
-}
-
 .error {
   color: #b91c1c;
   margin: 0;
@@ -136,7 +123,6 @@ button:hover {
   font-weight: 600;
 }
 
-/* Homepage hero styles */
 .hero {
   display: flex;
   gap: 2rem;
