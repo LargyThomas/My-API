@@ -40,7 +40,7 @@ export default function Dashboard() {
 				<div className="card">
 					<h1>Dashboard</h1>
 					{name ? (
-						<p>Bonjour {name} — que voulez-vous faire aujourd'hui ?</p>
+						<p>Bonjour {name} que voulez-vous faire aujourd'hui ?</p>
 					) : (
 						<p>Tu es connecté.</p>
 					)}

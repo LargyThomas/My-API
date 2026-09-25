@@ -63,10 +63,69 @@
 // Endpoints HTTP / Router -> controller
 const express = require('express');
 const router = express.Router();
+const passport = require('../../config/passport');
 const { register, login } = require('./auth.controller');
 const { validateRegister, validateLogin } = require('./auth.validation');
+const { generateToken } = require('./auth.service');
+const authMiddleware = require('../../middlewares/auth.middleware');
+const { pool } = require('../../db/pool');
 
+// Local auth endpoints (email + password)
 router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
+
+/**
+ * @swagger
+ * /auth/google:
+ *   get:
+ *     summary: Démarre la connexion via Google
+ *     tags: [Auth]
+ *     responses:
+ *       302:
+ *         description: Redirection vers Google
+ */
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+
+/**
+ * @swagger
+ * /auth/google/callback:
+ *   get:
+ *     summary: Callback appelé par Google après connexion, redirige vers le frontend avec un token
+ *     tags: [Auth]
+ *     responses:
+ *       302:
+ *         description: Redirection vers le frontend avec ?token=...
+ */
+router.get('/google/callback',
+    passport.authenticate('google', { session: false, failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=google` }), (req, res) => {
+        const token = generateToken(req.user);
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?token=${token}`);
+    }
+);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Récupère l'utilisateur actuellement connecté (via son token)
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Utilisateur trouvé
+ *       401:
+ *         description: Token invalide ou manquant
+ */
+router.get('/me', authMiddleware, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id, email, display_name FROM users WHERE id = $1', [req.user.userId]);
+        if (result.rows.length === 0) return res.status(404).json({ user: null });
+        return res.status(200).json({ user: result.rows[0] });
+    } catch (error) {
+        return res.status(500).json({ error: 'Error server. Please try again later.' });
+    }
+});
 
 module.exports = router;

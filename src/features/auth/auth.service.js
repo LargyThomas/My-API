@@ -67,4 +67,8 @@ const loginService = async ({ email, password }) => {
     return { token, user: { id: user.id, email: user.email } };
 };
 
-module.exports = { registerService, loginService };
+const generateToken = (user) => {
+    return jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+};
+
+module.exports = { registerService, loginService, generateToken };

@@ -1,0 +1,41 @@
+.footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  padding: 3rem 5%;
+  background-color: #2c2f31;
+  color: white;
+}
+
+.footer-description {
+  max-width: 500px;
+}
+
+.footer-description h1 {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+}
+
+.footer-description p {
+  margin: 0;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+}

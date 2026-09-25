@@ -5,12 +5,14 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 // Configurate the PostgreSQL client with environment variables
-const client = new Client ({
-    host : process.env.PG_HOST,
-    port : process.env.PG_PORT,
-    database : process.env.PG_DATABASE,
-    user : process.env.PG_USER,
-    password : process.env.PG_PASSWORD
+// Configurate the PostgreSQL client with environment variables
+const client = new Client({
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    database: process.env.PG_DATABASE,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    ssl: process.env.PG_HOST === 'localhost' ? false : { rejectUnauthorized: false }
 });
 
 // Function to read CSV file and return its content as an array of objects
@@ -43,6 +45,7 @@ async function seedAnimals(animalsData, animalTypeMap, outcomeTypeMap) {
     // Start a transaction to ensure all inserts are treated as a single unit of work
     await client.query('BEGIN');
 
+    let count = 0;
     for (const row of animalsData) {
         await client.query(
             `INSERT INTO animals (external_id, name, date_of_birth, outcome_datetime, age_outcome_days, animal_type_id, outcome_type_id, outcome_subtype, sex, is_intact, breed, color)
@@ -63,6 +66,10 @@ async function seedAnimals(animalsData, animalTypeMap, outcomeTypeMap) {
                 row.color
             ]
         );
+        count++;
+        if (count % 100 === 0) {
+            console.log(`${count} / ${animalsData.length} insérés`);
+        }
     }
 
     // Commit the transaction to save all changes to the database

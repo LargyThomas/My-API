@@ -1,0 +1,38 @@
+.refuge-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 6%;
+}
+
+.refuge-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.refuge-hero .lead {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.refuge-block {
+  margin-bottom: 2rem;
+}
+
+.refuge-block h2 {
+  margin-bottom: 0.75rem;
+}
+
+.refuge-block ul {
+  padding-left: 1.25rem;
+}
+
+.refuge-block li {
+  margin-bottom: 0.4rem;
+}
+
+.refuge-source {
+  font-size: 0.85rem;
+  color: #777;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}

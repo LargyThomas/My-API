@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import '../styles/Header.css'
 
 // Header with main navigation links
 export default function Header() {
@@ -16,6 +17,8 @@ export default function Header() {
 		<header>
 			<nav>
 				<Link to="/">Accueil</Link>
+				<Link to="/animals">Nos Animaux</Link>
+				<Link to="/refuge">Le Refuge</Link>
 				<Link to="/dashboard">Dashboard</Link>
 				{!token && <Link to="/login">Connexion</Link>}
 				{token && (
@@ -23,6 +26,7 @@ export default function Header() {
 						Se déconnecter
 					</button>
 				)}
+
 			</nav>
 		</header>
 	)

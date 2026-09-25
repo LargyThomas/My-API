@@ -1,0 +1,73 @@
+.animal-sheet {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 900px;
+}
+
+.animal-photo-card {
+  position: relative;
+  flex: 1 1 320px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.animal-photo {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.animal-description {
+  padding: 0 1rem;
+  color: #444;
+  font-style: italic;
+}
+
+.animal-id-badge {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: #1f2937;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.animal-info {
+  flex: 1 1 320px;
+}
+
+.animal-name {
+  margin-bottom: 0.75rem;
+}
+
+.animal-pills {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.pill {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.animal-details {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+}
+
+.animal-details li {
+  color: #333;
+}

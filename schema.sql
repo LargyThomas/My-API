@@ -2,11 +2,12 @@
 -- PostreSQL Schema for Animal Shelter Data
 -- ============================================================
 
--- Users table for authentication (if needed)
 CREATE TABLE users (
     id            SERIAL PRIMARY KEY,
     email         VARCHAR(255) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT,                       -- nullable: OAuth users won't have a local password
+    google_id     VARCHAR(255) UNIQUE,         -- Google OAuth id
+    display_name  VARCHAR(255),                -- Name from Google profile
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login as apiLogin } from '../services/auth'
 import useAuth from '../hooks/useAuth'
+import '../styles/Login.css'
 
 // Login page: simple form that stores token with useAuth
-export default function Login() {
+export default function Login() {  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -17,7 +18,6 @@ export default function Login() {
 
     try {
       const data = await apiLogin({ email, password })
-      // apiLogin returns an object; token is usually at data.token
       login(data.token)
       navigate('/dashboard')
     } catch (err) {
@@ -44,6 +44,11 @@ export default function Login() {
 
         <button type="submit">Se connecter</button>
       </form>
+
+      <div className="">
+        <button type="button" onClick={() => (window.location.href = "/")}>Retour à l'accueil</button>
+      </div>
+
     </main>
   )
 }

@@ -1,29 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-const authMiddleware = require('./middlewares/auth.middleware');
+const passport = require('./config/passport');
 const app = express();
 
-// Encode the request body as JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Enable CORS for requests from the frontend (Vite dev server)
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.options('{*split}', cors());
+// Trust proxy when deployed behind a proxy (Render uses proxies)
+app.set('trust proxy', 1);
 
-app.use((req, res, next) => {
-    const mutatingMethods = ['POST', 'PUT', 'DELETE'];
-    const publicRoutes = ['/auth/login', '/auth/register'];
-    const currentPath = req.path;
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 
-    if (mutatingMethods.includes(req.method) && !publicRoutes.includes(currentPath)) {
-        return authMiddleware(req, res, next);
-    }
-
-    return next();
-});
+// Stateless: no session, no cookie-based auth, just used to talk to Google
+app.use(passport.initialize());
 
 app.use('/animals', require('./features/animals/animals.routes'));
-app.use('/auth', require('./features/auth/auth.routes'));
+app.use('/api/auth', require('./features/auth/auth.routes'));
 
 module.exports = app;

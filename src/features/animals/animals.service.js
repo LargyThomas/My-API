@@ -1,6 +1,30 @@
 // Business logic / Validation / Pagination
 const { pool } = require('../../db/pool');
 
+const getAnimalImage = (animal = {}) => {
+    // If animal.image is a valid URL string, return it directly.
+    if (animal.image && typeof animal.image === 'string') {
+        return animal.image;
+    }
+
+    // If no valid image is provided, return a fallback Unsplash image based on the animal type.
+    const type = (animal.animal_type || animal.type || 'animal').toLowerCase();
+
+    const fallbackImages = {
+        dog: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80',
+        cat: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?auto=format&fit=crop&w=900&q=80',
+        bird: 'https://images.unsplash.com/photo-1444464666166-8c4f4bb9f4a2?auto=format&fit=crop&w=900&q=80',
+        horse: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=900&q=80'
+    };
+
+    return fallbackImages[type] || 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80';
+};
+
+const addImageToAnimal = (animal = {}) => ({
+    ...animal,
+    image: getAnimalImage(animal)
+});
+
 // Function to retrieve all animals from the database with pagination
 const findAllAnimals = async ({ page, limit, offset }) => {
     const dataQuery = `
@@ -12,7 +36,7 @@ const findAllAnimals = async ({ page, limit, offset }) => {
         LIMIT $1 OFFSET $2                  -- LIMIT = how many rows to return, OFFSET = which row to start from
     `;
     const resultDataQuery = await pool.query(dataQuery, [limit, offset]);
-    const data = resultDataQuery.rows;
+    const data = (resultDataQuery.rows || []).map(addImageToAnimal);
 
     const countQuery = `
         SELECT COUNT(*) AS total
@@ -40,7 +64,7 @@ const findAnimalById = async (id) => {
         WHERE ${isNumeric ? 'a.id = $1' : 'a.external_id = $1'}
     `;
     const result = await pool.query(query, [id]);
-    return result.rows[0] || null;
+    return result.rows[0] ? addImageToAnimal(result.rows[0]) : null;
 };
 
 const createAnimalService = async (animalData) => {
