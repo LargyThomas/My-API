@@ -10,6 +10,7 @@ export default function Footer() {
 				<p>
 					Donnez une seconde chance à un animal et trouvez le compagnon qui vous correspond.
 					Découvrez les animaux disponibles à l’adoption et offrez-leur un nouveau foyer rempli d’amour.
+					Admissions au Centre Animal du 1er octobre 2013 au 5 mai 2025.
 				</p>
 			</div>
 

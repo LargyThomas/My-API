@@ -32,4 +32,32 @@ export async function getAnimal(id) {
   }
 }
 
+// Reference data for the create-animal form
+export async function getAnimalTypes() {
+  try {
+    const res = await api.get('/animals/meta/types')
+    return res.data
+  } catch (err) {
+    console.error('getAnimalTypes error:', err.message || err)
+    return { animalTypes: [], outcomeTypes: [] }
+  }
+}
+
+// Create, update, delete: all three require the Authorization header,
+// already set globally by AuthContext once the user is logged in
+export async function createAnimal(animalData) {
+  const res = await api.post('/animals', animalData)
+  return res.data
+}
+
+export async function updateAnimal(externalId, animalData) {
+  const res = await api.put(`/animals/${externalId}`, animalData)
+  return res.data
+}
+
+export async function deleteAnimal(externalId) {
+  const res = await api.delete(`/animals/${externalId}`)
+  return res.data
+}
+
 export default api

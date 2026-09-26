@@ -1,0 +1,131 @@
+.dashboard-page {
+	max-width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.dashboard-page .card {
+	max-width: none;
+	width: 100%;
+}
+
+.dashboard-page h1,
+.dashboard-page h2 {
+	margin-top: 0;
+	color: #111827;
+}
+
+.dashboard-feedback {
+	background: #ecfdf5;
+	color: #047857;
+	border: 1px solid #10b981;
+	border-radius: 8px;
+	padding: 0.75rem 1rem;
+	font-weight: 600;
+	margin: 0;
+}
+
+/* --- Create form --- */
+.dashboard-form {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
+	align-items: end;
+}
+
+.dashboard-form input,
+.dashboard-form select {
+	width: 100%;
+	padding: 0.65rem 0.8rem;
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font: inherit;
+}
+
+.dashboard-form button {
+	grid-column: 1 / -1;
+	justify-self: start;
+}
+
+/* --- Buttons --- */
+.dashboard-page button {
+	background: #2563eb;
+	color: white;
+	border: none;
+	padding: 0.6rem 1.2rem;
+	border-radius: 8px;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.dashboard-page button:hover {
+	background: #1d4ed8;
+}
+
+.dashboard-page button:disabled {
+	background: #9ca3af;
+	cursor: not-allowed;
+}
+
+.dashboard-table button {
+	padding: 0.4rem 0.8rem;
+	font-size: 0.85rem;
+	margin-right: 0.4rem;
+}
+
+.dashboard-table td:last-child button:last-child {
+	background: #dc2626;
+}
+
+.dashboard-table td:last-child button:last-child:hover {
+	background: #b91c1c;
+}
+
+/* --- Table --- */
+.dashboard-table {
+	width: 100%;
+	border-collapse: collapse;
+	overflow: hidden;
+	border-radius: 8px;
+}
+
+.dashboard-table th {
+	background: #111827;
+	color: white;
+	text-align: left;
+	padding: 0.75rem 1rem;
+}
+
+.dashboard-table td {
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.dashboard-table tbody tr:nth-child(even) {
+	background: #f9fafb;
+}
+
+.dashboard-table tbody tr:hover {
+	background: #f3f4f6;
+}
+
+.dashboard-table input {
+	padding: 0.4rem 0.6rem;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font: inherit;
+	margin-right: 0.4rem;
+}
+
+/* --- Pagination --- */
+.dashboard-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin-top: 1rem;
+}
