@@ -135,9 +135,10 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middlewares/auth.middleware');
-const { allAnimals, getAnimalById, createAnimal, updateAnimal, deleteAnimal } = require('./animals.controller');
+const { allAnimals, getAnimalById, createAnimal, updateAnimal, deleteAnimal, getAnimalTypes } = require('./animals.controller');
 
 router.get('/', allAnimals);
+router.get('/meta/types', getAnimalTypes);
 router.get('/:id', getAnimalById);
 
 router.post('/', authMiddleware, createAnimal);

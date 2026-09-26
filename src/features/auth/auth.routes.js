@@ -73,33 +73,17 @@ const { pool } = require('../../db/pool');
 // Local auth endpoints (email + password)
 router.post('/login', validateLogin, login);
 
-/**
- * @swagger
- * /auth/google:
- *   get:
- *     summary: Démarre la connexion via Google
- *     tags: [Auth]
- *     responses:
- *       302:
- *         description: Redirection vers Google
- */
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    session: false
+}));
 
-/**
- * @swagger
- * /auth/google/callback:
- *   get:
- *     summary: Callback appelé par Google après connexion, redirige vers le frontend avec un token
- *     tags: [Auth]
- *     responses:
- *       302:
- *         description: Redirection vers le frontend avec ?token=...
- */
 router.get('/google/callback',
-    passport.authenticate('google', { session: false, failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=google` }), (req, res) => {
+    passport.authenticate('google', { session: false }),
+    (req, res) => {
         const token = generateToken(req.user);
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-        return res.redirect(`${frontendUrl}/login?token=${token}`);
+        const frontendUrl = process.env.FRONTEND_URL;
+        res.redirect(`${frontendUrl}/login?token=${token}`);
     }
 );
 

@@ -1,6 +1,6 @@
 // Receive the request / call service / send response
 const redisClient = require('../../cache/redis');
-const { findAllAnimals, findAnimalById, createAnimalService, updateAnimalService, deleteAnimalService } = require('./animals.service');
+const { findAllAnimals, findAnimalById, createAnimalService, updateAnimalService, deleteAnimalService, findAnimalTypes, findOutcomeTypes } = require('./animals.service');
 
 // Function to parse pagination parameters from the request query
 function parsePagination(query) {
@@ -110,4 +110,15 @@ const deleteAnimal = async (req, res) => {
     }
 };
 
-module.exports = { allAnimals, getAnimalById, createAnimal, updateAnimal, deleteAnimal };
+// Controller function to provide reference data (used by the dashboard's create form)
+const getAnimalTypes = async (req, res) => {
+    try {
+        const [animalTypes, outcomeTypes] = await Promise.all([findAnimalTypes(), findOutcomeTypes()]);
+        return res.status(200).json({ animalTypes, outcomeTypes });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error server. Please try again later.' });
+    }
+};
+
+module.exports = { allAnimals, getAnimalById, createAnimal, updateAnimal, deleteAnimal, getAnimalTypes };

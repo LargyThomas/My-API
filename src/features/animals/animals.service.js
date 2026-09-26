@@ -81,11 +81,12 @@ const createAnimalService = async (animalData) => {
 
 const updateAnimalService = async (id, animalData) => {
     const { name, date_of_birth, outcome_datetime, age_outcome_days } = animalData;
+    const isNumeric = /^\d+$/.test(String(id));
 
     const query = `
         UPDATE animals
         SET name = $1, date_of_birth = $2, outcome_datetime = $3, age_outcome_days = $4
-        WHERE id = $5
+        WHERE ${isNumeric ? 'id = $5' : 'external_id = $5'}
         RETURNING *
     `;
     const result = await pool.query(query, [name, date_of_birth, outcome_datetime, age_outcome_days, id]);
@@ -93,13 +94,26 @@ const updateAnimalService = async (id, animalData) => {
 };
 
 const deleteAnimalService = async (id) => {
+    const isNumeric = /^\d+$/.test(String(id));
+
     const query = `
         DELETE FROM animals
-        WHERE id = $1
+        WHERE ${isNumeric ? 'id = $1' : 'external_id = $1'}
         RETURNING *
     `;
     const result = await pool.query(query, [id]);
     return result.rows[0];
 };
 
-module.exports = { findAllAnimals, findAnimalById, createAnimalService, updateAnimalService, deleteAnimalService };
+// Reference data for the "create animal" form on the dashboard
+const findAnimalTypes = async () => {
+    const result = await pool.query('SELECT id, name FROM animal_types ORDER BY name ASC');
+    return result.rows;
+};
+
+const findOutcomeTypes = async () => {
+    const result = await pool.query('SELECT id, name FROM outcome_types ORDER BY name ASC');
+    return result.rows;
+};
+
+module.exports = { findAllAnimals, findAnimalById, createAnimalService, updateAnimalService, deleteAnimalService, findAnimalTypes, findOutcomeTypes };
