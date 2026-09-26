@@ -1,63 +1,62 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
-  headers: {
-    'Content-Type': 'application/json'
-  }
+	baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+	headers: {
+		'Content-Type': 'application/json'
+	}
 })
 
 // Fetch paginated animals. Returns an object with { data, pagination }
 export async function getAnimals({ page = 1, limit = 20 } = {}) {
-  try {
-    const res = await api.get('/animals', { params: { page, limit } })
-    const data = res.data && res.data.data ? res.data.data : []
-    const pagination = res.data && res.data.pagination ? res.data.pagination : { page, limit }
-    return { data, pagination }
-  } catch (err) {
-    console.error('getAnimals error:', err.message || err)
-    return { data: [], pagination: { page, limit } }
-  }
+	try {
+		const res = await api.get('/animals', { params: { page, limit } })
+		const data = res.data && res.data.data ? res.data.data : []
+		const pagination = res.data && res.data.pagination ? res.data.pagination : { page, limit }
+		return { data, pagination }
+	} catch (err) {
+		console.error('getAnimals error:', err.message || err)
+		return { data: [], pagination: { page, limit } }
+	}
 }
 
 // Fetch a single animal by id or external_id. Returns the animal object or null
 export async function getAnimal(id) {
-  try {
-    const res = await api.get(`/animals/${id}`)
-    // The backend returns { message, data }
-    return res.data && res.data.data ? res.data.data : null
-  } catch (err) {
-    console.error('getAnimal error:', err.message || err)
-    return null
-  }
+	try {
+		const res = await api.get(`/animals/${id}`)
+		return res.data && res.data.data ? res.data.data : null
+	} catch (err) {
+		console.error('getAnimal error:', err.message || err)
+		return null
+	}
 }
 
 // Reference data for the create-animal form
 export async function getAnimalTypes() {
-  try {
-    const res = await api.get('/animals/meta/types')
-    return res.data
-  } catch (err) {
-    console.error('getAnimalTypes error:', err.message || err)
-    return { animalTypes: [], outcomeTypes: [] }
-  }
+	try {
+		const res = await api.get('/animals/meta/types')
+		return res.data
+	} catch (err) {
+		console.error('getAnimalTypes error:', err.message || err)
+		return { animalTypes: [], outcomeTypes: [] }
+	}
 }
 
 // Create, update, delete: all three require the Authorization header,
 // already set globally by AuthContext once the user is logged in
 export async function createAnimal(animalData) {
-  const res = await api.post('/animals', animalData)
-  return res.data
+	const res = await api.post('/animals', animalData)
+	return res.data
 }
 
 export async function updateAnimal(externalId, animalData) {
-  const res = await api.put(`/animals/${externalId}`, animalData)
-  return res.data
+	const res = await api.put(`/animals/${externalId}`, animalData)
+	return res.data
 }
 
 export async function deleteAnimal(externalId) {
-  const res = await api.delete(`/animals/${externalId}`)
-  return res.data
+	const res = await api.delete(`/animals/${externalId}`)
+	return res.data
 }
 
 export default api

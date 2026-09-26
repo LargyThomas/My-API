@@ -5,7 +5,6 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 // Configurate the PostgreSQL client with environment variables
-// Configurate the PostgreSQL client with environment variables
 const client = new Client({
     host: process.env.PG_HOST,
     port: process.env.PG_PORT,
@@ -109,5 +108,5 @@ async function main() {
 // Run only when this file is executed directly (node seed.js), not when imported as a module
 if (require.main === module) {
     main();
-}   
+}
 module.exports = { client };

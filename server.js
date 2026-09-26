@@ -8,6 +8,6 @@ const app = require('./src/app');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-    console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+	console.log(`Server is listening on port ${port}`);
+	console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
 });

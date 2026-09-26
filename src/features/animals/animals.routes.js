@@ -63,16 +63,30 @@
 
 /**
  * @swagger
+ * /animals/meta/types:
+ *   get:
+ *     summary: Liste les types d'animaux et les types d'événements disponibles
+ *     tags: [Animals]
+ *     responses:
+ *       200:
+ *         description: Listes récupérées
+ *       500:
+ *         description: Erreur serveur
+ */
+
+/**
+ * @swagger
  * /animals/{id}:
  *   get:
- *     summary: Récupérer un animal par son identifiant
+ *     summary: Récupérer un animal par son identifiant ou son external_id
  *     tags: [Animals]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *         description: Id numérique interne ou external_id (ex. A134067)
  *     responses:
  *       200:
  *         description: Détails de l'animal
@@ -90,7 +104,7 @@
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -121,7 +135,7 @@
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Animal supprimé
@@ -131,7 +145,6 @@
  *         description: Erreur serveur
  */
 
-// Endpoints HTTP / Router -> controller
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middlewares/auth.middleware');

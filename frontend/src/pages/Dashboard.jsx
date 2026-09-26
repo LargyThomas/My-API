@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import useAuth from '../hooks/useAuth'
-import { me } from '../services/auth'
 import { getAnimals, getAnimalTypes, createAnimal, updateAnimal, deleteAnimal } from '../services/api'
 import '../styles/Dashboard.css'
 
 export default function Dashboard() {
 	const { token, logout } = useAuth()
-	const [user, setUser] = useState(null)
 	const navigate = useNavigate()
 
 	const [animals, setAnimals] = useState([])
@@ -23,22 +21,6 @@ export default function Dashboard() {
 	const [feedback, setFeedback] = useState('')
 	const [page, setPage] = useState(1)
 	const [pagination, setPagination] = useState({})
-
-	// Load the current user
-	useEffect(() => {
-		let mounted = true
-		async function fetchUser() {
-			if (!token) return
-			try {
-				const data = await me()
-				if (mounted) setUser(data)
-			} catch (err) {
-				console.error('failed to fetch user', err)
-			}
-		}
-		fetchUser()
-		return () => { mounted = false }
-	}, [token])
 
 	// Load animals + reference data (types), reusable after create/update/delete
 	const loadData = async (targetPage = page) => {
@@ -130,15 +112,13 @@ export default function Dashboard() {
 		}
 	}
 
-	const name = user && (user.name || user.nom || user.firstName || user.firstname || user.email)
-
 	return (
 		<>
 			<Header />
 			<main className="page dashboard-page">
 				<div className="card">
 					<h1>Dashboard</h1>
-					{name ? <p>Bonjour {name}</p> : <p>Tu es connecté.</p>}
+					<p>Tu es connecté.</p>
 				</div>
 
 				{feedback && <p className="dashboard-feedback">{feedback}</p>}
