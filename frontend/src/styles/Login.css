@@ -43,18 +43,9 @@
 }
 
 .form-card button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #2563eb;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.form-card button:hover {
-  background: #1d4ed8;
+	width: 100%;
+	margin-top: 10px;
+	font-size: 16px;
 }
 
 .error {
@@ -65,16 +56,4 @@
 .back-button {
     display: flex;
     justify-content: center;
-}
-
-.auth-page > div button {
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #2563eb;
-  cursor: pointer;
-}
-
-.auth-page > div button:hover {
-  background: #1d4ed8;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getAnimals } from '../services/api'
 import AnimalCard from './AnimalCard'
+import '../styles/Animals.css'
 
 // Component that loads a page of animals and shows simple pagination
 export default function AnimalList() {
@@ -37,14 +38,14 @@ export default function AnimalList() {
 				</div>
 			)}
 
-			<div className="pagination-controls" style={{ marginTop: 12 }}>
-				<button onClick={handlePrev} disabled={!pagination.hasPrevious} style={{ marginRight: 8 }}>
+			<div className="pagination-controls">
+				<button onClick={handlePrev} disabled={!pagination.hasPrevious}>
 					Précédent
 				</button>
 				<span>
 					Page {pagination.page || page} / {pagination.totalPages || '-'}
 				</span>
-				<button onClick={handleNext} disabled={!pagination.hasNext} style={{ marginLeft: 8 }}>
+				<button onClick={handleNext} disabled={!pagination.hasNext}>
 					Suivant
 				</button>
 			</div>

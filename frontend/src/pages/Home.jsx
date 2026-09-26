@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import AnimalHomePreview from '../components/AnimalHomePreview'
 import RefugeSection from '../components/RefugeSection'
 import heroImg from '../assets/preview_image20241130-1-1wf2bxw.svg'
+import '../styles/Home.css'
 
 // Simple, friendly homepage with hero and animal list preview
 export default function Home() {

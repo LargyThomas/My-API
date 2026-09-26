@@ -18,12 +18,14 @@ export default function RefugeSection() {
 				<div className="gradient-overlay"></div>
 
 				<div className="content-text">
-					<h2>Titre du refuge</h2>
-					<p>
-						Trouver sur qui parle ce paragraphe.<br />
-						But : Première impression du refuge après que le client est décidé de rester sur le site.
-					</p>
-				</div>
+                    <h2>Un refuge qui donne une seconde chance</h2>
+                    <p>
+                        Depuis plus de dix ans, notre équipe recueille, soigne et
+                        trouve un nouveau foyer aux animaux abandonnés ou perdus de
+                        la région. Chaque fiche que tu verras plus bas raconte une
+                        histoire, et attend peut-être la tienne.
+                    </p>
+                </div>
 			</div>
 		</section>
 	)

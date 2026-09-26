@@ -27,7 +27,6 @@
 	margin: 0;
 }
 
-/* --- Create form --- */
 .dashboard-form {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -49,28 +48,6 @@
 	justify-self: start;
 }
 
-/* --- Buttons --- */
-.dashboard-page button {
-	background: #2563eb;
-	color: white;
-	border: none;
-	padding: 0.6rem 1.2rem;
-	border-radius: 8px;
-	font: inherit;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background 0.15s ease;
-}
-
-.dashboard-page button:hover {
-	background: #1d4ed8;
-}
-
-.dashboard-page button:disabled {
-	background: #9ca3af;
-	cursor: not-allowed;
-}
-
 .dashboard-table button {
 	padding: 0.4rem 0.8rem;
 	font-size: 0.85rem;
@@ -85,7 +62,6 @@
 	background: #b91c1c;
 }
 
-/* --- Table --- */
 .dashboard-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -121,7 +97,6 @@
 	margin-right: 0.4rem;
 }
 
-/* --- Pagination --- */
 .dashboard-pagination {
 	display: flex;
 	align-items: center;

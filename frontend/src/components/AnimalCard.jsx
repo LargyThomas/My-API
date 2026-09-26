@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getAnimalImageUrl } from '../utils/animalImage'
 import { translateAnimalType, translateSex } from '../utils/translate'
+import '../styles/Animals.css'
 
 export default function AnimalCard({ animal }) {
 	const imageUrl = getAnimalImageUrl(animal)

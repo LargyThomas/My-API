@@ -22,7 +22,7 @@ export default function Header() {
 				<Link to="/dashboard">Dashboard</Link>
 				{!token && <Link to="/login">Connexion</Link>}
 				{token && (
-					<button onClick={handleLogout} style={{ marginLeft: 8 }}>
+					<button onClick={handleLogout}>
 						Se déconnecter
 					</button>
 				)}
